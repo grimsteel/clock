@@ -1,0 +1,150 @@
+# ESPHome base config
+
+esphome:
+  name: presence_clock
+  friendly_name: Presence Clock
+  includes:
+    - location_mappings.h
+
+esp32:
+  variant: esp32c3
+  framework:
+    type: esp-idf
+
+logger:
+
+api:
+  encryption:
+    key: ""
+
+ota:
+  - platform: esphome
+    password: ""
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  domain: ".local"
+  use_address: ""
+
+  ap:
+    ssid: "Clock Fallback Hotspot"
+    password: ""
+
+captive_portal:
+
+# Clock-specific config
+
+text_sensor:
+  - platform: homeassistant
+    id: person_1
+    entity_id: person.person_1
+    on_value:
+      then:
+        - script.execute: apply_locations
+  - platform: homeassistant
+    id: person_2
+    entity_id: person.person_2
+    on_value:
+      then:
+        - script.execute: apply_locations
+  - platform: homeassistant
+    id: person_3
+    entity_id: person.person_3
+    on_value:
+      then:
+        - script.execute: apply_locations
+  - platform: homeassistant
+    id: person_4
+    entity_id: person.person_4
+    on_value:
+      then:
+        - script.execute: apply_locations
+
+output:
+  # LEDs
+  - platform: gpio
+    pin: GPIO4
+    id: light_left
+    inverted: true
+  - platform: gpio
+    pin: GPIO7
+    id: light_right
+    inverted: true
+  # Servos
+  - platform: ledc
+    pin: GPIO10
+    frequency: "50Hz"
+    id: servo_out_1
+  - platform: ledc
+    pin: GPIO3
+    frequency: "50Hz"
+    id: servo_out_2
+  - platform: ledc
+    pin: GPIO0
+    frequency: "50Hz"
+    id: servo_out_3
+  - platform: ledc
+    pin: GPIO1
+    frequency: "50Hz"
+    id: servo_out_4
+
+light:
+  - platform: status_led
+    name: "Onboard LED"
+    pin:
+      number: GPIO8
+      inverted: true
+  - platform: binary
+    output: light_left
+    name: "Left LED"
+  - platform: binary
+    output: light_right
+    name: "Right LED"
+
+servo:
+  - id: servo_1
+    output: servo_out_1
+  - id: servo_2
+    output: servo_out_2
+  - id: servo_3
+    output: servo_out_3
+  - id: servo_4
+    output: servo_out_4
+
+script:
+  - id: apply_locations
+    # if a location update happens while this is running, just restart the script
+    mode: restart
+    then:
+      - lambda: |-
+          string loc_states_str[] = {
+            id(person_1).state,
+            id(person_2).state,
+            id(person_3).state,
+            id(person_4).state
+          };
+          int loc_states[4];
+          double servo_states[4];
+          // parse location string into int (see external header file)
+          for (int i = 0; i < 4; i++) loc_states[i] = location_int(loc_states_str[i]);
+          
+          int sector_size = 360 / 5; // 5 locs
+          // each hand has its own subsector to avoid overlap
+          int subsector_size = sector_size / 4;
+          
+          for (int i = 0; i < 4; i++) {
+             // convert [0, 5) to [0, 360)
+             loc_states[i] *= sector_size;
+             // hand offset
+             loc_states[i] += subsector_size * i;
+             // put in middle
+             loc_states[i] += subsector_size / 2;
+             // map to [-1, 1]
+             servo_states[i] = (loc_states[i] - 180) / 180.0;
+          }
+          id(servo_1).write(servo_states[0]);
+          id(servo_2).write(servo_states[1]);
+          id(servo_3).write(servo_states[2]);
+          id(servo_4).write(servo_states[3]);
+          
