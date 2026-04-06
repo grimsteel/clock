@@ -39,3 +39,38 @@ The native firmware is likely more lightweight than the ESPHome firmware, and wi
 
 In `firmware/native`:
 
+1. Run `menuconfig` to configure the Wi-Fi and MQTT connection information:
+   * `idf.py menuconfig`
+   * These parameters are in the "Clock Connection Configuration" section
+   * WPA2 and username/password MQTT can be configured here; for more advanced setups you'll need to edit `wifi.cpp`
+2. Flash the firmware: `idf.py flash`
+3. Upon running, the onboard LED will blink until the Wi-Fi and MQTT connections have been established.
+4. A Home Assistant discovery payload will be published, so the MQTT items below can be controlled through Home Assistant:
+
+### MQTT Protocol Specification
+
+Topic prefix: `/devices/clock`
+
+#### LEDs
+
+The three LED IDs are `led_1`, `led_2`, and `led_onboard`. State values are either `on` or `off`.
+
+State is published at `/leds/{led_id}/state`. They can be controlled at `/leds/{led_id}/control`. All LEDs are initially set to off upon connect.
+
+### Person Configuration
+
+The four Home Assistant person IDs can be configured by writing to `/config/people`.
+
+The value should be a comma separated list of person IDs, without the `person.` prefix:
+
+`person_1,person_2,person_3,person_4`.
+
+This value will be remembered in flash, so it only needs to be published once.
+
+### Location Configuration
+
+The five location zone IDs can be configured by writing to `/config/locations`, in the same format as above.
+
+This value will also be remembered. 
+
+The actual sectors which each location corresponds to depends on the servo orientation
