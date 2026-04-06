@@ -57,7 +57,7 @@ The three LED IDs are `led_1`, `led_2`, and `led_onboard`. State values are eith
 
 State is published at `/leds/{led_id}/state`. They can be controlled at `/leds/{led_id}/control`. All LEDs are initially set to off upon connect.
 
-### Person Configuration
+#### Person Configuration
 
 The four Home Assistant person IDs can be configured by writing to `/config/people`.
 
@@ -67,7 +67,7 @@ The value should be a comma separated list of person IDs, without the `person.` 
 
 This value will be remembered in flash, so it only needs to be published once.
 
-### Location Configuration
+#### Location Configuration
 
 The five location zone IDs can be configured by writing to `/config/locations`, in the same format as above.
 

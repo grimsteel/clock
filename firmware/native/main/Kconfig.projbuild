@@ -3,7 +3,6 @@ menu "Clock Connection Configuration"
         string "Wi-Fi SSID"
     config CLOCK_WIFI_PASSWORD
         string "Wi-Fi password"
-        info "password"
     config CLOCK_MQTT_BROKER
         string "MQTT Broker URL"
         default "mqtt://test.mosquitto.org"
