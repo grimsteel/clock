@@ -96,4 +96,6 @@ void disconnect() {
     WIFI_CHECK_THROW(esp_wifi_disconnect());
 }
 
+}
+
 #endif

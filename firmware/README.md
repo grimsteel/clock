@@ -50,10 +50,11 @@ In `firmware/native`:
 ### MQTT Protocol Specification
 
 Topic prefix: `/devices/clock`
+Availability: `/status` (either `on` or `off` (last will))
 
 #### LEDs
 
-The three LED IDs are `led_1`, `led_2`, and `led_onboard`. State values are either `on` or `off`.
+The three LED IDs are `1`, `2`, and `board`. State values are either `on` or `off`.
 
 State is published at `/leds/{led_id}/state`. They can be controlled at `/leds/{led_id}/control`. All LEDs are initially set to off upon connect.
 

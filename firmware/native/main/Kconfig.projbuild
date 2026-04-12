@@ -6,4 +6,8 @@ menu "Clock Connection Configuration"
     config CLOCK_MQTT_BROKER
         string "MQTT Broker URL"
         default "mqtt://test.mosquitto.org"
+    config CLOCK_MQTT_USERNAME
+        string "MQTT Username"
+    config CLOCK_MQTT_PASSWORD
+        string "MQTT Password"
 endmenu

@@ -9,13 +9,35 @@ dependencies:
       registry_url: https://components.espressif.com/
       type: service
     version: 1.0.2-beta
+  espressif/esp_mqtt_cxx:
+    component_hash: b6393d3e894fdcbbe5351d64500316a2920a4a3fb9c43209951dc97ae916ac0f
+    dependencies:
+    - name: espressif/esp-idf-cxx
+      registry_url: https://components.espressif.com
+      require: private
+      version: ^1.0.0-beta
+    - name: espressif/mqtt
+      registry_url: https://components.espressif.com
+      require: private
+      rules:
+      - if: idf_version >=6.0
+        version: ^1.0.0
+      version: '*'
+    - name: idf
+      require: private
+      version: '>=5.0,<6.0'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 0.5.0
   idf:
     source:
       type: idf
     version: 5.4.2
 direct_dependencies:
 - espressif/esp-idf-cxx
+- espressif/esp_mqtt_cxx
 - idf
-manifest_hash: c72637442ff9a1263c11b24095da6fa6d8f1a38947738f252dd658954a533bdc
+manifest_hash: 4278e3e3e8ba7a3003719dd9f159a395c97b124024dbe1613f28e1a7fb6308ab
 target: esp32
 version: 2.0.0
