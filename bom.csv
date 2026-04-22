@@ -1,6 +1,5 @@
 Description,Link,Per-unit price,Quantity,Total price,Running price w/ tax
 CAD components,https://cad.onshape.com/documents/5b8ef3e45edb03dc1124a4e9,$0.00,1,$0.00,$0.00
 PCB,https://oshpark.com,$6.45,1,$6.45,$7.01
-ESP32-C3 Supermini,https://www.aliexpress.us/item/3256806025345322.html,$2.63,1,$2.63,$9.86
-MG90s Micro Servo (5 pack),https://www.aliexpress.us/item/3256808303872992.html,$9.86,1,$9.86,$20.57
-PTFE sheet (0.5x100x100mm),https://www.aliexpress.us/item/3256803757155678.html,$2.65,1,$2.65,$23.45
+ESP32-C3 Supermini,https://www.aliexpress.us/item/3256807292829704.html,$2.70,1,$2.700,$9.94
+MG90s Micro Servo (5 pack),https://www.aliexpress.us/item/3256808303872992.html,$9.88,1,$9.88,$20.68
